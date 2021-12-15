@@ -18,3 +18,5 @@ kubectl config set-context --current --namespace tripinsights
 kubectl get pods
 
 kubectl port-forward tripviewer-6bd77f467f-745lm 8080:80
+
+kubectl exec -it userprofile-8456b6f998-5jr66 -- /bin/sh
