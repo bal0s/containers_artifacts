@@ -19,7 +19,10 @@ spec:
         image: registrywnu3987.azurecr.io/tripinsights/poi:v1
         env:
         - name: SQL_PASSWORD
-          value: "nB1wl3Qw2"
+          valueFrom:
+            secretKeyRef:
+              name: secretpassword
+              key: SQL_PASSWORD
         - name: SQL_USER
           value: "sqladminwNu3987"
         - name: SQL_SERVER
