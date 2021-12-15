@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-java
+  template:
+    metadata:
+      labels:
+        app: user-java
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: user-java
+        image: registrywnu3987.azurecr.io/tripinsights/user-java:v1
+        env:
+        - name: SQL_PASSWORD
+          value: "nB1wl3Qw2"
+        - name: SQL_USER
+          value: "sqladminwNu3987"
+        - name: SQL_SERVER
+          value: "sqlserverwnu3987.database.windows.net"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+          name: user-java
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-java
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: user-java

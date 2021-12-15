@@ -1,0 +1,17 @@
+
+az login
+
+az aks create  \
+    --resource-group teamResources  \
+    --name openhack \
+    --node-count 3 \
+    --attach-acr registrywnu3987 \
+    --generate-ssh-keys
+
+
+az aks get-credentials --resource-group teamResources -n openhack
+
+k create ns tripinsights
+
+k config set-context --current --namespace tripinsights
+
