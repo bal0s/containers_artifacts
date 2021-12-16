@@ -1,0 +1,12 @@
+az aks update -g teamResources -n openhack --enable-aad --enable-azure-rbac
+
+AKS_ID=$(az aks show -g teamResources -n openhack --query id -o tsv)
+
+az role assignment create --role "Azure Kubernetes Service RBAC Reader" --assignee ecda66c0-4a32-4829-b530-f33f2170d688 --scope $AKS_ID/namespaces/web
+az role assignment create --role "Azure Kubernetes Service RBAC Reader" --assignee 18d18f89-d354-4bcf-a018-325fbeb965c7 --scope $AKS_ID/namespaces/api
+az role assignment create --role "Azure Kubernetes Service RBAC Writer" --assignee 18d18f89-d354-4bcf-a018-325fbeb965c7 --scope $AKS_ID/namespaces/web
+az role assignment create --role "Azure Kubernetes Service RBAC Writer" --assignee ecda66c0-4a32-4829-b530-f33f2170d688 --scope $AKS_ID/namespaces/api
+
+smazat /.kube/config
+
+Pridat rolu pre api-dev a web-dev = Azure Kubernetes Service Cluster User Role

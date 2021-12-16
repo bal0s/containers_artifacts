@@ -19,9 +19,9 @@ spec:
         image: registrywnu3987.azurecr.io/tripinsights/tripviewer:v1
         env:
         - name: "TRIPS_API_ENDPOINT"
-          value: "http://trips"
+          value: "http://trips.api.cluster.local"
         - name: "USERPROFILE_API_ENDPOINT"
-          value: "http://userprofile"
+          value: "http://userprofile.api.cluster.local"
         resources:
           requests:
             cpu: 100m
