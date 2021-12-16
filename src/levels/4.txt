@@ -1,6 +1,22 @@
-az aks update -g teamResources -n openhack --enable-aad --enable-azure-rbac
+az aks update -g teamResources -n openhack1 --enable-aad --enable-azure-rbac
 
-AKS_ID=$(az aks show -g teamResources -n openhack --query id -o tsv)
+
+az aks create  \
+    --resource-group teamResources  \
+    --name openhack1 \
+    --attach-acr registrywnu3987 \
+    --generate-ssh-keys \
+    --enable-aad \
+    --enable-azure-rbac \
+    --vm-set-type VirtualMachineScaleSets \
+    --vnet-subnet-id /subscriptions/0b31c5d8-b174-498e-8738-7326e1179666/resourceGroups/teamResources/providers/Microsoft.Network/virtualNetworks/vnet/subnets/vm-subnet \
+    --load-balancer-sku standard \
+    --node-count 3 \
+    --zones 1 2 3
+
+
+
+AKS_ID=$(az aks show -g teamResources -n openhack1 --query id -o tsv)
 
 az role assignment create --role "Azure Kubernetes Service RBAC Reader" --assignee ecda66c0-4a32-4829-b530-f33f2170d688 --scope $AKS_ID/namespaces/web
 az role assignment create --role "Azure Kubernetes Service RBAC Reader" --assignee 18d18f89-d354-4bcf-a018-325fbeb965c7 --scope $AKS_ID/namespaces/api
@@ -10,3 +26,13 @@ az role assignment create --role "Azure Kubernetes Service RBAC Writer" --assign
 smazat /.kube/config
 
 Pridat rolu pre api-dev a web-dev = Azure Kubernetes Service Cluster User Role
+
+az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee hacker688e@msftopenhack6808ops.onmicrosoft.com --scope $AKS_ID
+
+az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee hacker1gdg@msftopenhack6808ops.onmicrosoft.com --scope $AKS_ID
+az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee hacker262m@msftopenhack6808ops.onmicrosoft.com --scope $AKS_ID
+az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee hacker3scc@msftopenhack6808ops.onmicrosoft.com --scope $AKS_ID
+az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee hacker4ly8@msftopenhack6808ops.onmicrosoft.com --scope $AKS_ID
+az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee hacker5smc@msftopenhack6808ops.onmicrosoft.com --scope $AKS_ID
+
+
