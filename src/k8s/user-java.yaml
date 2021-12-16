@@ -27,13 +27,33 @@ spec:
           value: "sqladminwNu3987"
         - name: SQL_SERVER
           value: "sqlserverwnu3987.database.windows.net"
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/user-java/healthcheck
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 5
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/user-java/healthcheck
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 5
         resources:
           requests:
             cpu: 100m
-            memory: 128Mi
+            memory: 256Mi
           limits:
             cpu: 250m
-            memory: 256Mi
+            memory: 512Mi
         ports:
         - containerPort: 80
           name: user-java

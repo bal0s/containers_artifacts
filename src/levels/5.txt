@@ -1,0 +1,21 @@
+# Ingress
+
+NAMESPACE=ingress-basic
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install ingress-nginx ingress-nginx/ingress-nginx --create-namespace --namespace $NAMESPACE
+kubectl config set-context --current --namespace ingress-basic
+kubectl get all
+
+# NAME                                         TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)                      AGE
+# service/ingress-nginx-controller             LoadBalancer   10.0.201.6    20.105.58.203   80:30809/TCP,443:30620/TCP   58s
+
+kubectl config set-context --current --namespace web
+kubectl apply -f ./ingressweb.yaml
+kubectl config set-context --current --namespace api
+kubectl apply -f ./ingressapi.yaml
+
+# troubleshooting
+
+kubectl logs user-java-59d98f59bf-7q5v4 -p
+
+# nastavovat readiness probes, liveness probe

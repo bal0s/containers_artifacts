@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingressweb
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  labels:
+    name: ingressweb
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: tripviewer
+            port: 
+              number: 80

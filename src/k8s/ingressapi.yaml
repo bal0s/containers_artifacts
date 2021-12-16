@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingressapi
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  labels:
+    name: ingressapi
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/poi"
+        backend:
+          service:
+            name: poi
+            port: 
+              number: 80
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/trips"
+        backend:
+          service:
+            name: trips
+            port: 
+              number: 80
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/user-java"
+        backend:
+          service:
+            name: user-java
+            port: 
+              number: 80
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/api/user"
+        backend:
+          service:
+            name: userprofile
+            port: 
+              number: 80
