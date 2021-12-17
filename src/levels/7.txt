@@ -1,0 +1,22 @@
+#update subnet
+az network vnet subnet update --name vm-subnet --resource-group teamResources  --vnet-name vnet --disable-private-endpoint-network-policies true
+
+ 
+
+#Create private endpoint
+az network private-endpoint create --name SQLPrivateEndpoint --resource-group teamResources --vnet-name vnet --subnet vm-subnet --private-connection-resource-id /subscriptions/0b31c5d8-b174-498e-8738-7326e1179666/resourceGroups/teamResources/providers/Microsoft.Sql/servers/sqlserverwnu3987 --group-id SQLServer --connection-name myConnection
+
+ 
+
+#create dns zone
+az network private-dns zone create --resource-group teamResources --name "privatelink.database.windows.net"
+
+ 
+
+#
+az network private-dns link vnet create --resource-group teamResources --zone-name "privatelink.database.windows.net" --name MySQLDNSLink --virtual-network vnet --registration-enabled false
+
+ 
+
+#
+az network private-endpoint dns-zone-group create --resource-group teamResources --endpoint-name SQLPrivateEndpoint --name MySQLZoneGroup --private-dns-zone "privatelink.database.windows.net" --zone-name privatelink.database.windows.net
