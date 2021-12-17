@@ -18,11 +18,6 @@ spec:
       - name: trips
         image: registrywnu3987.azurecr.io/tripinsights/trips:v1
         env:
-        - name: SQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: secretpassword
-              key: SQL_PASSWORD
         - name: SQL_USER
           value: "sqladminwNu3987"
         - name: SQL_SERVER
@@ -37,6 +32,17 @@ spec:
         ports:
         - containerPort: 80
           name: trips
+        volumeMounts:
+        - name: sql-password
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+        - name: sql-password
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-kvname-user-msi"          
 ---
 apiVersion: v1
 kind: Service

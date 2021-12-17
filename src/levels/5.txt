@@ -19,3 +19,39 @@ kubectl apply -f ./ingressapi.yaml
 kubectl logs user-java-59d98f59bf-7q5v4 -p
 
 # nastavovat readiness probes, liveness probe
+
+
+# Vault enable addons
+az aks enable-addons --addons azure-keyvault-secrets-provider --name openhack1 --resource-group teamResources
+
+# Vault create key Vault
+
+az keyvault create -n openhack-vault -g teamResources -l northeurope
+az keyvault secret set --vault-name openhack-vault -n sql-secret --value nB1wl3Qw2
+
+# Register the EnablePodIdentityPreview
+az feature register --name EnablePodIdentityPreview --namespace Microsoft.ContainerService
+
+# Install the aks-preview Azure CLI
+az extension add --name aks-preview
+az extension update --name aks-preview
+
+# Update an AKS cluster to managed identities
+az aks update -g teamResources -n openhack1 --enable-managed-identity
+
+# Verification
+az aks show -g teamResources -n openhack1 --query "servicePrincipalProfile"
+az aks show -g teamResources -n openhack1 --query "identity"
+
+az aks show -g teamResources -n openhack1 --query identityProfile.kubeletidentity.clientId -o tsv
+
+# set policy to access secrets in your key vault
+az keyvault set-policy -n openhack-vault --secret-permissions get --spn fd96970f-1385-4f6a-a9ef-7c2542bf16f3
+
+# rebuild nodes
+az aks nodepool upgrade --node-image-only -g teamResources -n nodepool1 --cluster-name openhack1
+
+# rerun to let the newly created kubelet
+az aks update --attach-acr registrywnu3987 -g teamResources -n openhack1
+
+kubectl apply -f secretproviderclass.yaml -n api
