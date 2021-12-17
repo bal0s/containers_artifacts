@@ -1,0 +1,9 @@
+az aks enable-addons -a monitoring -n openhack1 -g teamResources
+
+az aks show -n openhack1 -g teamResources
+
+# Monitoring - Logs
+InsightsMetrics
+| where Namespace == 'prometheus'
+| where parse_json(Tags).["app.kubernetes.io/name"] == "ingress-nginx"
+| summarize sum(Val) by Name,bin(TimeGenerated, 15m)
